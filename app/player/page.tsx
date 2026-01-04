@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { VideoPlayer } from '@/components/player/VideoPlayer';
@@ -93,7 +93,7 @@ function PlayerContent() {
     }
   }, [videoData, playUrl, videoId, currentEpisode, source, title, addToHistory]);
 
-  const handleEpisodeClick = (episode: any, index: number) => {
+  const handleEpisodeClick = useCallback((episode: any, index: number) => {
     setCurrentEpisode(index);
     setPlayUrl(episode.url);
     setVideoError('');
@@ -102,7 +102,7 @@ function PlayerContent() {
     const params = new URLSearchParams(searchParams.toString());
     params.set('episode', index.toString());
     router.replace(`/player?${params.toString()}`, { scroll: false });
-  };
+  }, [searchParams, router, setCurrentEpisode, setPlayUrl, setVideoError]);
 
   const handleToggleReverse = (reversed: boolean) => {
     setIsReversed(reversed);
@@ -114,7 +114,7 @@ function PlayerContent() {
   };
 
   // Handle auto-next episode
-  const handleNextEpisode = () => {
+  const handleNextEpisode = useCallback(() => {
     const episodes = videoData?.episodes;
     if (!episodes) return;
 
@@ -129,9 +129,9 @@ function PlayerContent() {
 
     const nextEpisode = episodes[nextIndex];
     if (nextEpisode) {
-      handleEpisodeClick(nextEpisode, nextIndex);
+      handleEpisodeClick(nextEpisode, nextIndex); // handleEpisodeClick relies on state setters, which are stable
     }
-  };
+  }, [videoData, currentEpisode, isReversed, router, searchParams]); // handleEpisodeClick is not memoized, but uses stable hooks setters. wait, handleEpisodeClick is inline too!
 
   return (
     <div className="min-h-screen bg-[var(--bg-color)]">

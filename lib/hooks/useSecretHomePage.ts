@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSearchCache } from '@/lib/hooks/useSearchCache';
 import { useParallelSearch } from '@/lib/hooks/useParallelSearch';
@@ -20,6 +20,10 @@ export function useSecretHomePage() {
         return settings.adultSources.filter(s => s.enabled);
     }, []);
 
+    const onUrlUpdate = useCallback((q: string) => {
+        router.replace(`/secret?q=${encodeURIComponent(q)}`, { scroll: false });
+    }, [router]);
+
     // Search stream hook
     const {
         loading,
@@ -33,7 +37,7 @@ export function useSecretHomePage() {
         applySorting,
     } = useParallelSearch(
         saveToCache,
-        (q: string) => router.replace(`/secret?q=${encodeURIComponent(q)}`, { scroll: false })
+        onUrlUpdate
     );
 
     // Re-sort results when sort preference changes

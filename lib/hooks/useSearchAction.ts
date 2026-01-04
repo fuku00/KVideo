@@ -123,7 +123,9 @@ export function useSearchAction({ state, onCacheUpdate, onUrlUpdate }: UseSearch
 
         } catch (error) {
             if (error instanceof Error && error.name === 'AbortError') {
-                // Ignore abort errors
+                // Ignore abort errors and DO NOT set loading to false
+                // because a new search might have already started
+                return;
             } else {
                 console.error('Search error:', error);
             }
