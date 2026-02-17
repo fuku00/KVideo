@@ -47,6 +47,12 @@ export function DesktopMoreMenu({
         setAdFilterMode,
         fullscreenType,
         setFullscreenType,
+        danmakuApiUrl,
+        setDanmakuApiUrl,
+        danmakuOpacity,
+        setDanmakuOpacity,
+        danmakuFontSize,
+        setDanmakuFontSize,
     } = usePlayerSettings();
 
     const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -356,6 +362,63 @@ export function DesktopMoreMenu({
                         </>
                     )}
                 </div>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-[var(--glass-border)] my-1.5 sm:my-2" />
+
+            {/* Danmaku API URL */}
+            <div className={`${isRotated ? 'px-2 py-1.5' : 'px-3 py-2 sm:px-4 sm:py-2.5'}`}>
+                <div className={`flex items-center gap-2 text-[var(--text-color)] ${isRotated ? 'text-[11px]' : 'text-xs sm:text-sm'} mb-1.5`}>
+                    <Icons.Danmaku size={isRotated ? 14 : 16} className="sm:w-[18px] sm:h-[18px]" />
+                    <span>弹幕 API</span>
+                </div>
+                <input
+                    type="text"
+                    placeholder="https://example.com"
+                    value={danmakuApiUrl}
+                    onChange={(e) => setDanmakuApiUrl(e.target.value)}
+                    className={`w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] text-[var(--text-color)] placeholder:text-[var(--text-color-secondary)]/50 focus:outline-none focus:border-[var(--accent-color)] ${isRotated ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm'}`}
+                    onClick={(e) => e.stopPropagation()}
+                />
+            </div>
+
+            {/* Danmaku Opacity Slider */}
+            <div className={`${isRotated ? 'px-2 py-1.5' : 'px-3 py-2 sm:px-4 sm:py-2.5'} flex items-center justify-between gap-3`}>
+                <div className={`flex items-center gap-2 text-[var(--text-color)] ${isRotated ? 'text-[11px]' : 'text-xs sm:text-sm'} whitespace-nowrap`}>
+                    <span>透明度</span>
+                </div>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value={Math.round(danmakuOpacity * 100)}
+                        onChange={(e) => setDanmakuOpacity(parseInt(e.target.value) / 100)}
+                        className={`flex-1 accent-[var(--accent-color)] ${isRotated ? 'h-1' : 'h-1.5'}`}
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    <span className={`text-[var(--text-color-secondary)] ${isRotated ? 'text-[9px]' : 'text-[10px] sm:text-xs'} w-7 text-right`}>
+                        {Math.round(danmakuOpacity * 100)}%
+                    </span>
+                </div>
+            </div>
+
+            {/* Danmaku Font Size */}
+            <div className={`${isRotated ? 'px-2 py-1.5' : 'px-3 py-2 sm:px-4 sm:py-2.5'} flex items-center justify-between gap-4`}>
+                <div className={`flex items-center gap-2 text-[var(--text-color)] ${isRotated ? 'text-[11px]' : 'text-xs sm:text-sm'}`}>
+                    <span>字号</span>
+                </div>
+                <button
+                    onClick={() => {
+                        const sizes = [14, 18, 20, 24, 28];
+                        const idx = sizes.indexOf(danmakuFontSize);
+                        setDanmakuFontSize(sizes[(idx + 1) % sizes.length]);
+                    }}
+                    className={`flex items-center gap-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] rounded-[var(--radius-2xl)] outline-none hover:border-[var(--accent-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_5%,transparent)] transition-all cursor-pointer whitespace-nowrap ${isRotated ? 'px-1.5 py-0.5 text-[9px]' : 'px-2 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs'}`}
+                >
+                    <span>{danmakuFontSize}px</span>
+                </button>
             </div>
 
             {/* Auto Next Episode Switch */}

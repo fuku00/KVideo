@@ -32,6 +32,8 @@ interface DesktopControlsProps {
     onProgressMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
     onProgressTouchStart: (e: React.TouchEvent<HTMLDivElement>) => void;
     formatTime: (seconds: number) => string;
+    danmakuEnabled?: boolean;
+    onToggleDanmaku?: () => void;
 }
 
 export function DesktopControls(props: DesktopControlsProps) {

@@ -19,6 +19,9 @@ interface VideoPlayerProps {
   onNextEpisode?: () => void;
   isReversed?: boolean;
   isPremium?: boolean;
+  // Danmaku props
+  videoTitle?: string;
+  episodeName?: string;
 }
 
 export function VideoPlayer({
@@ -29,7 +32,9 @@ export function VideoPlayer({
   totalEpisodes,
   onNextEpisode,
   isReversed = false,
-  isPremium = false
+  isPremium = false,
+  videoTitle,
+  episodeName,
 }: VideoPlayerProps) {
   const [videoError, setVideoError] = useState<string>('');
   const [useProxy, setUseProxy] = useState(false);
@@ -227,6 +232,8 @@ export function VideoPlayer({
           currentEpisodeIndex={currentEpisode}
           onNextEpisode={onNextEpisode}
           isReversed={isReversed}
+          videoTitle={videoTitle}
+          episodeName={episodeName}
         />
       )}
     </Card>

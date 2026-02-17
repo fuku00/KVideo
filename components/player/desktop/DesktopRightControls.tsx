@@ -9,6 +9,8 @@ interface DesktopRightControlsProps {
     isAirPlaySupported: boolean;
     isCastAvailable: boolean;
     isProxied?: boolean;
+    danmakuEnabled?: boolean;
+    onToggleDanmaku?: () => void;
     onToggleFullscreen: () => void;
     onTogglePictureInPicture: () => void;
     onShowAirPlayMenu: () => void;
@@ -21,6 +23,8 @@ export function DesktopRightControls({
     isAirPlaySupported,
     isCastAvailable,
     isProxied,
+    danmakuEnabled,
+    onToggleDanmaku,
     onToggleFullscreen,
     onTogglePictureInPicture,
     onShowAirPlayMenu,
@@ -28,6 +32,21 @@ export function DesktopRightControls({
 }: DesktopRightControlsProps) {
     return (
         <div className="relative z-50 flex items-center gap-3">
+            {/* Danmaku Toggle */}
+            {onToggleDanmaku && (
+                <button
+                    onClick={onToggleDanmaku}
+                    className="btn-icon"
+                    aria-label={danmakuEnabled ? '关闭弹幕' : '开启弹幕'}
+                    title={danmakuEnabled ? '关闭弹幕' : '开启弹幕'}
+                >
+                    <Icons.Danmaku
+                        size={20}
+                        className={danmakuEnabled ? 'text-[var(--accent-color)]' : ''}
+                    />
+                </button>
+            )}
+
             {/* Picture-in-Picture */}
             {
                 isPiPSupported && (

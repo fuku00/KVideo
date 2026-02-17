@@ -45,6 +45,11 @@ export interface AppSettings {
   fullscreenType: 'auto' | 'native' | 'window'; // Fullscreen mode preference: 'auto' (native on desktop, window on mobile) | 'native' | 'window'
   proxyMode: ProxyMode; // Proxy behavior: 'retry' | 'none' | 'always'
   rememberScrollPosition: boolean; // Remember scroll position when navigating back or refreshing
+  // Danmaku settings
+  danmakuEnabled: boolean; // Show danmaku overlay on video
+  danmakuApiUrl: string; // Self-hosted danmaku API endpoint
+  danmakuOpacity: number; // 0.1 - 1.0
+  danmakuFontSize: number; // px
 }
 
 import { exportSettings, importSettings, SEARCH_HISTORY_KEY, WATCH_HISTORY_KEY } from './settings-helpers';
@@ -117,6 +122,10 @@ function getDefaultAppSettings(): AppSettings {
     fullscreenType: 'auto',
     proxyMode: 'retry',
     rememberScrollPosition: true,
+    danmakuEnabled: false,
+    danmakuApiUrl: '',
+    danmakuOpacity: 0.7,
+    danmakuFontSize: 20,
   };
 }
 
@@ -193,6 +202,10 @@ export const settingsStore = {
         fullscreenType: (parsed.fullscreenType === 'window' || parsed.fullscreenType === 'native' || parsed.fullscreenType === 'auto') ? parsed.fullscreenType : 'auto',
         proxyMode: (parsed.proxyMode === 'retry' || parsed.proxyMode === 'none' || parsed.proxyMode === 'always') ? parsed.proxyMode : 'retry',
         rememberScrollPosition: parsed.rememberScrollPosition !== undefined ? parsed.rememberScrollPosition : true,
+        danmakuEnabled: parsed.danmakuEnabled !== undefined ? parsed.danmakuEnabled : false,
+        danmakuApiUrl: typeof parsed.danmakuApiUrl === 'string' ? parsed.danmakuApiUrl : '',
+        danmakuOpacity: typeof parsed.danmakuOpacity === 'number' ? parsed.danmakuOpacity : 0.7,
+        danmakuFontSize: typeof parsed.danmakuFontSize === 'number' ? parsed.danmakuFontSize : 20,
       };
     } catch {
       // Even if localStorage fails, we should return defaults + ENV subscriptions

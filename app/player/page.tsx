@@ -180,6 +180,8 @@ function PlayerContent() {
                 onNextEpisode={handleNextEpisode}
                 isReversed={isReversed}
                 isPremium={isPremium}
+                videoTitle={videoData?.vod_name || title || ''}
+                episodeName={videoData?.episodes?.[currentEpisode]?.name || ''}
               />
               <div className="hidden lg:block">
                 <VideoMetadata
